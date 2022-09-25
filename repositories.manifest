@@ -1,0 +1,15 @@
+: 1
+role: prerequisite
+location: https://github.com/crails-framework/libcrails.git#master
+
+:
+role: prerequisite
+location: https://github.com/crails-framework/libcrails-controllers.git#master
+
+:
+role: prerequisite
+location: https://github.com/crails-framework/libcrails-http-client.git#master
+
+:
+role: prerequisite
+location: https://github.com/crails-framework/libcrails-signin.git#master

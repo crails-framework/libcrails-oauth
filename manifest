@@ -1,0 +1,11 @@
+: 1
+name: libcrails-oauth
+version: 2.0.0
+summary: crails-oauth C++ library
+license: BSD-3-Clause
+description-file: README.md
+url: https://github.com/crails-framework/libcrails-oauth
+email: michael@unetresgrossebite.com
+depends: * build2 >= 0.15.0
+depends: * bpkg >= 0.15.0
+depends: { libcrails libcrails-controllers libcrails-signin } ^2.0.0
