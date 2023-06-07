@@ -60,6 +60,7 @@ string OAuth::Api::http_query(const std::string& url_string, const std::string& 
   HttpRequest  request{HttpVerb::post, '/' + url.target, 11};
   HttpResponse response;
   std::unique_ptr<Client::ClientInterface> client;
+  char body_buffer[body.length()];
 
   if (url.ssl)
     client.reset(new Crails::Ssl::Client(url.host, url.port));
@@ -72,9 +73,11 @@ string OAuth::Api::http_query(const std::string& url_string, const std::string& 
   request.set(HttpHeader::connection, "close");
   request.set(HttpHeader::content_type, "application/x-www-form-urlencoded");
   request.content_length(body.length());
-  request.body() = body;
+  request.body().data = reinterpret_cast<void*>(body_buffer);
+  request.body().size = body.length();
+  body.copy(body_buffer, body.length());
   client->connect();
-  logger << Logger::Debug << "OAuth(" << url_string << ") query:\n" << request << Logger::endl;
+  logger << Logger::Debug << "OAuth(" << url_string << ") query:" << Logger::endl;
   response = client->query(request);
   logger << Logger::Debug << "OAuth(" << url_string << ") response:\n" << response << Logger::endl;
   return response.body();
