@@ -25,12 +25,12 @@ string Live::get_scope() const
 void Live::fetch_user_data()
 {
   Crails::Ssl::Client client("api.live.net", 443);
-  Crails::HttpRequest request{
+  Crails::Client::Request request{
     Crails::HttpVerb::get,
     "/v5.0/me?access_token" + access_token.content,
     11
   };
-  Crails::HttpResponse response;
+  Crails::Client::Response response;
   DataTree result;
 
   client.connect();

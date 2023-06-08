@@ -51,7 +51,7 @@ namespace Crails
     protected:
       void require_access_token();
       void require_user_data();
-      void prepare(Crails::HttpRequest&);
+      void prepare(Crails::Client::Request&);
       std::string http_query(const std::string& url, bool use_token = true)
       { return http_query(url, "", use_token); }
       std::string http_query(const std::string& url, const std::string& body, bool use_token = true);

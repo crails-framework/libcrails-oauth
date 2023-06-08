@@ -56,11 +56,10 @@ DataTree& OAuth::Api::get_user_data()
 
 string OAuth::Api::http_query(const std::string& url_string, const std::string& body, bool use_token)
 {
-  Url          url = Crails::Url::from_string(url_string);
-  HttpRequest  request{HttpVerb::post, '/' + url.target, 11};
-  HttpResponse response;
+  Url              url = Crails::Url::from_string(url_string);
+  Client::Request  request{HttpVerb::post, '/' + url.target, 11};
+  Client::Response response;
   std::unique_ptr<Client::ClientInterface> client;
-  char body_buffer[body.length()];
 
   if (url.ssl)
     client.reset(new Crails::Ssl::Client(url.host, url.port));
@@ -73,9 +72,7 @@ string OAuth::Api::http_query(const std::string& url_string, const std::string& 
   request.set(HttpHeader::connection, "close");
   request.set(HttpHeader::content_type, "application/x-www-form-urlencoded");
   request.content_length(body.length());
-  request.body().data = reinterpret_cast<void*>(body_buffer);
-  request.body().size = body.length();
-  body.copy(body_buffer, body.length());
+  request.body() = body;
   client->connect();
   logger << Logger::Debug << "OAuth(" << url_string << ") query:" << Logger::endl;
   response = client->query(request);
@@ -83,7 +80,7 @@ string OAuth::Api::http_query(const std::string& url_string, const std::string& 
   return response.body();
 }
 
-void OAuth::Api::prepare(Crails::HttpRequest& request)
+void OAuth::Api::prepare(Client::Request& request)
 {
   stringstream authorization_header;
 
